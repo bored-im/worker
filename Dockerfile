@@ -19,6 +19,7 @@ RUN apt-get install -y rvm
 RUN adduser --disabled-password --gecos "" travis
 RUN usermod -aG sudo travis
 RUN bash -lc "rvm use 2.4.1 --install --fuzzy"
+RUN bash -lc "rvm use 2.3.6 --install --fuzzy"
 
 COPY --from=builder /go/bin/travis-worker /usr/local/bin/travis-worker
 COPY --from=builder /go/src/github.com/travis-ci/worker/systemd.service /app/systemd.service

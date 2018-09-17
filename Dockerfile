@@ -29,7 +29,7 @@ RUN bash -lc "rvm use 2.3.6 --install --fuzzy"
 # elixir
 RUN wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && dpkg -i erlang-solutions_1.0_all.deb
 RUN apt-get update
-RUN apt-get install esl-erlang elixir
+RUN apt-get install -y esl-erlang elixir
 
 COPY --from=builder /go/bin/travis-worker /usr/local/bin/travis-worker
 COPY --from=builder /go/src/github.com/travis-ci/worker/systemd.service /app/systemd.service

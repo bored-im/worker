@@ -13,15 +13,23 @@ FROM ubuntu:bionic
 RUN apt-get update
 RUN apt-get install -y software-properties-common build-essential git sudo wget \
                        redis-server
+
+# need a travis user!
+RUN adduser --disabled-password --gecos "" travis
+RUN usermod -aG sudo travis
+
+# ruby
 RUN apt-add-repository -y ppa:rael-gc/rvm
 RUN apt-get update
 RUN apt-get install -y rvm
-# RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-RUN adduser --disabled-password --gecos "" travis
-RUN usermod -aG sudo travis
 RUN ln -s /usr/share/rvm/ /root/.rvm
 RUN bash -lc "rvm use 2.4.1 --install --fuzzy"
 RUN bash -lc "rvm use 2.3.6 --install --fuzzy"
+
+# elixir
+RUN wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && dpkg -i erlang-solutions_1.0_all.deb
+RUN apt-get update
+RUN apt-get install esl-erlang elixir
 
 COPY --from=builder /go/bin/travis-worker /usr/local/bin/travis-worker
 COPY --from=builder /go/src/github.com/travis-ci/worker/systemd.service /app/systemd.service

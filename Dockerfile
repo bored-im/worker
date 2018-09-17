@@ -11,13 +11,15 @@ RUN make build
 
 FROM ubuntu:bionic
 RUN apt-get update
-RUN apt-get install -y software-properties-common build-essential git sudo redis-server
+RUN apt-get install -y software-properties-common build-essential git sudo wget \
+                       redis-server
 RUN apt-add-repository -y ppa:rael-gc/rvm
 RUN apt-get update
 RUN apt-get install -y rvm
 # RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 RUN adduser --disabled-password --gecos "" travis
 RUN usermod -aG sudo travis
+RUN ln -s /usr/share/rvm/ /root/.rvm
 RUN bash -lc "rvm use 2.4.1 --install --fuzzy"
 RUN bash -lc "rvm use 2.3.6 --install --fuzzy"
 

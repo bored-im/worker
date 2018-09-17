@@ -21,7 +21,7 @@ RUN usermod -aG sudo travis
 # ruby
 RUN apt-add-repository -y ppa:rael-gc/rvm
 RUN apt-get update
-RUN apt-get install -y rvm
+RUN sudo apt-get install -y rvm
 RUN ln -s /usr/share/rvm/ /root/.rvm
 RUN bash -lc "rvm use 2.4.1 --install --fuzzy"
 RUN bash -lc "rvm use 2.3.6 --install --fuzzy"

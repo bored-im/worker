@@ -31,6 +31,14 @@ RUN wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && d
 RUN apt-get update
 RUN apt-get install -y esl-erlang elixir
 
+# postgresql
+RUN wget --quiet -O - https://postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+RUN sudo add-apt-repository "deb https://apt.postgresql.org/pub/repos/apt bionic-pgdg main"
+RUN sudo apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-9.4
+RUN echo "local   all             all                                     trust" > /etc/postgresql/9.4/main/pg_hba.conf
+RUN echo "host    all             all             127.0.0.1/32            trust" >> /etc/postgresql/9.4/main/pg_hba.conf
+
 COPY --from=builder /go/bin/travis-worker /usr/local/bin/travis-worker
 COPY --from=builder /go/src/github.com/travis-ci/worker/systemd.service /app/systemd.service
 COPY --from=builder /go/src/github.com/travis-ci/worker/systemd-wrapper /app/systemd-wrapper
